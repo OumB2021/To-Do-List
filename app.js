@@ -10,13 +10,14 @@ app.get('/', function(req, res){
 
   var today = new Date();
   var day = "";
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "friday", "saturday"]
   if (today.getDay() === 6 || today.getDay() === 0){
-    day = "weekend";
-    res.render("list", {kindOfDay:day});
+    day = days[today.getDay()];
   } else {
-    day = "week day";
-    res.render("list", {kindOfDay:day});
+    day = days[today.getDay()];
   }
+
+  res.render("list", {kindOfDay:day});
 });
 
 app.listen(3000, function(){
