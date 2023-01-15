@@ -9,10 +9,13 @@ app.use(bodyParser.urlencoded({ extended:true }));
 app.get('/', function(req, res){
 
   var today = new Date();
+  var day = "";
   if (today.getDay() === 6 || today.getDay() === 0){
-    res.send ("Yay it's the weekend");
+    day = "weekend";
+    res.render("list", {kindOfDay:day});
   } else {
-    res.send("I work today");
+    day = "week day";
+    res.render("list", {kindOfDay:day});
   }
 });
 
