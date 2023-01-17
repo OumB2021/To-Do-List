@@ -9,15 +9,16 @@ app.use(bodyParser.urlencoded({ extended:true }));
 app.get('/', function(req, res){
 
   var today = new Date();
-  var day = "";
-  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "friday", "saturday"]
-  if (today.getDay() === 6 || today.getDay() === 0){
-    day = days[today.getDay()];
-  } else {
-    day = days[today.getDay()];
+  
+  var options = {
+    weekday:"long",
+    day:"numeric",
+    month:"long"
   }
 
-  res.render("list", {kindOfDay:day});
+  var day = today.toLocaleDateString("en-US", options);
+
+  res.render("list", {kindOfDay : day});
 });
 
 app.listen(3000, function(){
