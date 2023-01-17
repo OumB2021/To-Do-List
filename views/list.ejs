@@ -9,14 +9,16 @@
 <body>
   <h1><%= kindOfDay %> </h1>
   <ul>
-    <li>Buy Food</li>
-    <li>Cook the food</li>
-    <li>eat the food</li>
-  </ul>
+    <% for( let index = 0; index < newListItems.length; index++ ) { %>
+      <li> <%=  newListItems[index] %> </li>
+    <% } %>
 
-  <form action="" method="post">
-    <input type="text" placeholder="Add task">
+    </ul>
+
+  <form action="/" method="post">
+    <input type="text" name="newItem" placeholder="Add task">
     <button type="submit">Add to list</button>
   </form>
+
 </body>
 </html>
