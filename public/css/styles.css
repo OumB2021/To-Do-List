@@ -57,10 +57,9 @@ form {
 }
 
 button {
-  min-height: 50px;
-  width: 50px;
-  border-radius: 50%;
+  padding: 4px 10px;
   border-color: transparent;
+  border-radius: 4px;
   background-color: #A683E3;
   color: #fff;
   font-size: 30px;
