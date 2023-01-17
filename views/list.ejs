@@ -8,18 +8,26 @@
   <title>Document</title>
 </head>
 <body>
-  <h1><%= kindOfDay %> </h1>
-  <ul>
-    <% for( let index = 0; index < newListItems.length; index++ ) { %>
-      <li> <%=  newListItems[index] %> </li>
-    <% } %>
 
-    </ul>
+  <div class="box" id="heading">
+    <h1><%= kindOfDay %> </h1>
+  </div>
+  
+  <div class="box">
 
-  <form action="/" method="post">
-    <input type="text" name="newItem" placeholder="Add task">
-    <button type="submit">Add to list</button>
-  </form>
-
+      <% for( let index = 0; index < newListItems.length; index++ ) { %>
+        <div class="item">
+          <input type="checkbox">
+          <p><%=  newListItems[index] %></p> 
+        </div>       
+      <% } %>
+  
+    <form class="item" action="/" method="post">
+      <input type="text" name="newItem" placeholder="Add task" autocomplete="off">
+      <button type="submit" name="button">+</button>
+    </form>
+    
+  </div>
+  
 </body>
 </html>
