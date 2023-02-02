@@ -31,8 +31,12 @@ const item3 = new dbItems({
   name : "<-- Hit this to delete the item!",
 });
 
-const defaultsItems = [items1, items2, items3];
+const defaultsItems = [item1, item2, item3];
 
+dbItems.insertMany(defaultsItems, function(err){
+  if (err) {console.log(err.message)} 
+  else {console.log("Items added successfully")}
+});
 
 
 let workItems = [];
