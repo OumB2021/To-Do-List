@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -8,10 +9,31 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(express.static("public"));
 
-// let items = ["Buy Food", "Cook Food", "Workout"];
-
-mongoose.connect('mongodb://127.0.0.1:27017/Persons', {useNewUrlParser: true});
+mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', {useNewUrlParser: true});
 mongoose.set('strictQuery', true);
+
+
+const itemsSchema = {
+  name : String,
+};
+
+const dbItems = mongoose.model('item', itemsSchema);
+
+const item1 = new dbItems({
+  name : "Welcome to your todolist!",
+});
+
+const item2 = new dbItems({
+  name : "Hit the + button to add a new item!",
+});
+
+const item3 = new dbItems({
+  name : "<-- Hit this to delete the item!",
+});
+
+const defaultsItems = [items1, items2, items3];
+
+
 
 let workItems = [];
 
