@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -7,7 +8,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(express.static("public"));
 
-let items = ["Buy Food", "Cook Food", "Workout"];
+// let items = ["Buy Food", "Cook Food", "Workout"];
+
+mongoose.connect('mongodb://127.0.0.1:27017/Persons', {useNewUrlParser: true});
+mongoose.set('strictQuery', true);
+
 let workItems = [];
 
 
