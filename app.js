@@ -76,11 +76,31 @@ app.post('/', function(req, res){
 
   const itemName = req.body.newItem;
 
-  const newItem = new dbItems({
-    name: itemName,
-  });
+  if (itemName === ""){
 
-  newItem.save();
+    console.log('You cannot add an empty task');
+
+  } else{
+    const newItem = new dbItems({
+      name: itemName,
+    });
+
+    newItem.save();
+  }
+
+  res.redirect('/');
+});
+
+app.post('/delete', (req, res) => {
+  const itemChecked = req.body.checkbox;
+
+  dbItems.findByIdAndRemove({_id: itemChecked}, (err)=>{
+    if (err){
+      console.log(err.message);
+    } else {
+      console.log("Item deleted successfully");
+    }
+  });
 
   res.redirect('/');
 });
