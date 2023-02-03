@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const lodash = require('lodash');
+const _ = require('lodash');
 
 const app = express();
 
@@ -36,7 +36,7 @@ var defaultsItems = [item1, item2, item3];
 
 const listSchema = {
   name : String,
-  item : [itemsSchema]
+  items : [itemsSchema]
 }
 
 const List = mongoose.model('List', listSchema);
@@ -98,23 +98,27 @@ app.post('/', function(req, res){
 
 // Customer page
 app.get('/:customListName', (req, res) => {
+
   const customListName = _.upperFirst(req.params.customListName);
 
   List.findOne({name: customListName}, (err, foundList)=>{
     if (!err) {
       if (!foundList) {
-        console.log('Doesn\'t exist')
+        //Create a new list
+        const list = new List({
+          name: customListName,
+          items: defaultsItems,
+        });
+      
+        list.save();
+        res.redirect('/' + customListName);
+
       } else{
-        console.log('Found');
+        res.render("list", {listTitle : customListName, newListItems : foundList.items});
       }
     } else{console.log(err.message)}
   })
-  const list = new List({
-    name: customListName,
-    item: defaultsItems,
-  });
-
-  list.save();
+  
 })
 
 app.post('/delete', (req, res) => {
