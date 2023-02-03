@@ -50,11 +50,9 @@ app.get('/', function(req, res){
   var day = today.toLocaleDateString("en-US", options);
   
   dbItems.find({}, function (err, foundItems){
-
-    console.log("Items added")
     if (foundItems.length === 0){
 
-      dbItems.insertMany([item1, item2, item3], function(err){
+      dbItems.insertMany(defaultsItems, function(err){
 
         if (err) {console.log(err.message)} 
         else {console.log("Items added successfully")}
@@ -76,21 +74,15 @@ app.get('/work', function(req, res){
 // Post request on home page
 app.post('/', function(req, res){
 
-  let item = req.body.newItem;
+  const itemName = req.body.newItem;
 
-  if (req.body.list === "Work List"){
-    
-    workItems.push(item);
-    res.redirect('/work');
-  }
+  const newItem = new dbItems({
+    name: itemName,
+  });
 
-  else{
-    items.push(item);
-    res.redirect('/');
-  }
+  newItem.save();
 
-  console.log(req.body)
-  
+  res.redirect('/');
 });
 
 // Post request on work page
