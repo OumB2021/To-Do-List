@@ -31,17 +31,12 @@ const item3 = new dbItems({
   name : "<-- Hit this to delete the item!",
 });
 
-const defaultsItems = [item1, item2, item3];
-
-// dbItems.insertMany(defaultsItems, function(err){
-//   if (err) {console.log(err.message)} 
-//   else {console.log("Items added successfully")}
-// });
-
+var defaultsItems = [item1, item2, item3];
 
 let workItems = [];
 
 
+// Home page
 app.get('/', function(req, res){
 
   let today = new Date();
@@ -55,14 +50,30 @@ app.get('/', function(req, res){
   var day = today.toLocaleDateString("en-US", options);
   
   dbItems.find({}, function (err, foundItems){
-    res.render("list", {listTitle : day, newListItems : foundItems});
+
+    console.log("Items added")
+    if (foundItems.length === 0){
+
+      dbItems.insertMany([item1, item2, item3], function(err){
+
+        if (err) {console.log(err.message)} 
+        else {console.log("Items added successfully")}
+      });
+
+      res.redirect('/');
+    }
+    else {
+      res.render("list", {listTitle : day, newListItems : foundItems});
+    }
   });
 });
 
+// Work page
 app.get('/work', function(req, res){
   res.render('list', {listTitle : "Work List", newListItems : workItems});
 });
 
+// Post request on home page
 app.post('/', function(req, res){
 
   let item = req.body.newItem;
@@ -82,10 +93,12 @@ app.post('/', function(req, res){
   
 });
 
+// Post request on work page
 app.post('/work', function(req, res){
   res.redirect('/work');
 })
 
+// About page
 app.get('/about', function(req, res){
   res.render('about');
 });
