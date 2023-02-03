@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const lodash = require('lodash');
 
 const app = express();
 
@@ -32,6 +33,13 @@ const item3 = new dbItems({
 });
 
 var defaultsItems = [item1, item2, item3];
+
+const listSchema = {
+  name : String,
+  item : [itemsSchema]
+}
+
+const List = mongoose.model('List', listSchema);
 
 let workItems = [];
 
@@ -66,10 +74,7 @@ app.get('/', function(req, res){
   });
 });
 
-// Work page
-app.get('/work', function(req, res){
-  res.render('list', {listTitle : "Work List", newListItems : workItems});
-});
+
 
 // Post request on home page
 app.post('/', function(req, res){
@@ -90,6 +95,27 @@ app.post('/', function(req, res){
 
   res.redirect('/');
 });
+
+// Customer page
+app.get('/:customListName', (req, res) => {
+  const customListName = _.upperFirst(req.params.customListName);
+
+  List.findOne({name: customListName}, (err, foundList)=>{
+    if (!err) {
+      if (!foundList) {
+        console.log('Doesn\'t exist')
+      } else{
+        console.log('Found');
+      }
+    } else{console.log(err.message)}
+  })
+  const list = new List({
+    name: customListName,
+    item: defaultsItems,
+  });
+
+  list.save();
+})
 
 app.post('/delete', (req, res) => {
   const itemChecked = req.body.checkbox;
