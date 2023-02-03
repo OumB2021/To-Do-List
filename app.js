@@ -9,8 +9,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(express.static("public"));
 
-mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', {useNewUrlParser: true});
 mongoose.set('strictQuery', true);
+mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', {useNewUrlParser: true});
 
 
 const itemsSchema = {
@@ -33,10 +33,10 @@ const item3 = new dbItems({
 
 const defaultsItems = [item1, item2, item3];
 
-dbItems.insertMany(defaultsItems, function(err){
-  if (err) {console.log(err.message)} 
-  else {console.log("Items added successfully")}
-});
+// dbItems.insertMany(defaultsItems, function(err){
+//   if (err) {console.log(err.message)} 
+//   else {console.log("Items added successfully")}
+// });
 
 
 let workItems = [];
@@ -51,9 +51,12 @@ app.get('/', function(req, res){
     day:"numeric",
     month:"long"
   }
-
-  let day = today.toLocaleDateString("en-US", options);
-  res.render("list", {listTitle : day, newListItems : items});
+  
+  var day = today.toLocaleDateString("en-US", options);
+  
+  dbItems.find({}, function (err, foundItems){
+    res.render("list", {listTitle : day, newListItems : foundItems});
+  });
 });
 
 app.get('/work', function(req, res){
