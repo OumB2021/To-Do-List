@@ -40,7 +40,7 @@ const listSchema = {
 }
 
 const List = mongoose.model('List', listSchema);
-
+var day;
 let workItems = [];
 
 
@@ -55,7 +55,7 @@ app.get('/', function(req, res){
     month:"long"
   }
   
-  var day = today.toLocaleDateString("en-US", options);
+   day = today.toLocaleDateString("en-US", options);
   
   dbItems.find({}, function (err, foundItems){
     if (foundItems.length === 0){
@@ -80,20 +80,30 @@ app.get('/', function(req, res){
 app.post('/', function(req, res){
 
   const itemName = req.body.newItem;
+  const listName = req.body.list;
 
   if (itemName === ""){
 
     console.log('You cannot add an empty task');
 
   } else{
+
     const newItem = new dbItems({
       name: itemName,
     });
 
-    newItem.save();
+    if (listName === day){
+      newItem.save();
+      res.redirect('/');
+    } else{
+      List.findOne({name: listName}, function(err, foundList){
+        foundList.items.push()
+      })
+    }
+    
   }
 
-  res.redirect('/');
+  
 });
 
 // Customer page
